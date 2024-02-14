@@ -47,14 +47,17 @@ function IconPanel({ data, close, copyIcon, successIcon, closeIcon }) {
     <div className="body">
       <div className="icons">
         <div className="icon huge" dangerouslySetInnerHTML={{__html: contents}}></div>
-        <div className="lg">
-          <div className="icon" dangerouslySetInnerHTML={{__html: contents}}></div>
+        <div className="icon-col lg">
+            <div className="icon light" dangerouslySetInnerHTML={{__html: contents}}></div>
+            <div className="icon dark" dangerouslySetInnerHTML={{__html: contents}}></div>
         </div>
-        <div className="md">
-          <div className="icon" dangerouslySetInnerHTML={{__html: contents}}></div>
+        <div className="icon-col md">
+          <div className="icon light" dangerouslySetInnerHTML={{__html: contents}}></div>
+          <div className="icon dark" dangerouslySetInnerHTML={{__html: contents}}></div>
         </div>
-        <div className="sm">
-          <div className="icon" dangerouslySetInnerHTML={{__html: contents}}></div>
+        <div className="icon-col sm">
+          <div className="icon light" dangerouslySetInnerHTML={{__html: contents}}></div>
+          <div className="icon dark" dangerouslySetInnerHTML={{__html: contents}}></div>
         </div>
       </div>
       <div className="right">
