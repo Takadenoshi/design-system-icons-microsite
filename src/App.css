@@ -37,11 +37,12 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  max-width: 960px;
+  max-width: calc(min(100vw, 960px));
 }
 
 .heading {
-  margin: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   font-size: 2rem;
 }
 
@@ -51,7 +52,7 @@
   justify-content: space-between;
   background: black;
   padding: 0.75rem;
-  border-radius: 8px;
+  border-radius: 20px;
   margin-bottom: 2rem;
 }
 
@@ -62,19 +63,22 @@
 .toolbar, .icon-list {
   display: flex;
   flex-wrap: wrap;
-  max-width: 95vw;
+  max-width: calc(100vw - 20px);
 }
 
 .toolbar button:first-child {
   margin-left: 0.5rem;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .toolbar button:last-child {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
-  margin-right: 0.5rem;
+}
+
+.icon-list {
+  justify-content: space-between;
 }
 
 .fake-btn:hover {
@@ -139,9 +143,11 @@
 }
 
 input {
+  border-width: 1px;
   padding: 0.5rem;
   font-size: 1.25rem;
-  border-radius: 4px;
+  border-radius: 10px;
+  border-width: 1px;
 }
 .dark input {
   background: rgba(255,255,255,0.1);
@@ -158,6 +164,7 @@ input {
 
 .light .icon-panel {
   background-color: rgba(240,240,240,1);
+  border-top: 5px rgba(0, 0, 0, 0.08) solid;
 }
 
 .icon-panel {
@@ -168,22 +175,27 @@ input {
   bottom: 0;
   left: 0;
   right: 0;
-  top: 60svh;
   background-color: #202020;
+  border-top: 5px rgba(255, 255, 255, 0.14) solid;
 
   .close-btn {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 5px;
+    right: 5px;
+    button {
+      padding: 0.25rem;
+    }
   }
 
   .body {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 960px;
+    max-width: calc(min(100vw, 960px));
 
     .icons {
+      margin-top: 1.5rem;
+      margin-bottom: 1.25rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -204,10 +216,14 @@ input {
     align-items: center;
     max-width: 50%;
     margin-right: 2rem;
-    margin-left: 2rem;
+    margin-left: 5rem;
+    min-width: 250px;
     .row {
+      width: 100%;
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      margin-bottom: 1rem;
     }
     .value {
       font-weight: bold;
@@ -226,3 +242,37 @@ input {
   margin-left: 4px;
   opacity: 0.8;
 }
+
+ @media only screen and (max-width: 768px) {
+   .heading {
+     font-size: 1.75rem;
+   }
+   .toolbar {
+     flex-direction: column;
+     max-width: calc(100vw - 50px);
+     > div {
+       margin-top: 0.4rem;
+       margin-bottom: 0.4rem;
+     }
+     > div:first-child {
+       margin-top: 0;
+     }
+     > div:last-child {
+       margin-bottom: 0rem;
+     }
+   }
+   .icon-panel {
+     .body {
+       flex-direction: column;
+       .icons {
+         margin-top: 3rem;
+         margin-bottom: 1rem;
+       }
+       .right {
+         min-width: 70%;
+         margin-left: 0rem;
+         margin-right: 0rem;
+       }
+     }
+   }
+ }
