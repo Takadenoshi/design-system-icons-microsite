@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback, useMemo, useRef, } from 'react';
 import './App.css'
 
+function unique(arr) {
+  return [...new Set(arr)];
+}
+
 function useIconData() {
   const [error, setError] = useState(undefined);
   const [loading, setLoading] = useState(false);
@@ -20,10 +24,11 @@ function useIconData() {
         for(const [label, def] of Object.entries(obj)) {
           if (def["$type"] === "icon") {
             def.$groups = [...groups];
-            def.$keywords = ([
+            def.$keywords = unique([
+              ...label.split("_"),
               ...def.$name.toLowerCase().split("_"),
-              ...def.$groups.flatMap(g => g.toLowerCase().split("_")),
-            ]);
+              ...def.$groups.flatMap(g => g.split("_")),
+            ]).map(word => word.toLowerCase());
             out.push(def)
           } else {
             out.push(...parseIcons(def, [...groups, label]));
