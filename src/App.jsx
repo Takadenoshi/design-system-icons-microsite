@@ -68,7 +68,6 @@ function Copy({ copyIcon, successIcon, value }) {
 function IconPanel({ data, close, icons, }) {
   const copyIcon = icons && icons['system_mono_content_copy'];
   const successIcon = icons && icons['system_mono_check'];
-  debugger;
   const closeIcon = icons && icons['system_mono_close'];
   const downloadIcon = icons && icons['system_mono_download'];
 
