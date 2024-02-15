@@ -10,11 +10,33 @@ function useIconData() {
     setError();
     setLoading(true);
     try {
-      const response = await fetch(`https://raw.githubusercontent.com/kadena-community/design-system/main/tokens/foundation/icon/svg.tokens.json`);
+      const response = await fetch(`https://raw.githubusercontent.com/kadena-community/design-system/main/builds/tokens/kda-design-system.raw.svg.tokens.json`);
       const data = await response.json();
-      setData(data.kda.foundation.icon);
+      const inputData = data.kda.foundation.icon;
+      function parseIcons(obj, groups=[]) {
+        // obj can be variable length; collect keys into "group" until we hit the icon definition with $type
+        // returns flat list of icon defs
+        const out = [];
+        for(const [label, def] of Object.entries(obj)) {
+          if (def["$type"] === "icon") {
+            def.$groups = [...groups];
+            def.$keywords = ([
+              ...def.$name.toLowerCase().split("_"),
+              ...def.$groups.flatMap(g => g.toLowerCase().split("_")),
+            ]);
+            out.push(def)
+          } else {
+            out.push(...parseIcons(def, [...groups, label]));
+          }
+        }
+        return out;
+      }
+      const flatIcons = parseIcons(inputData);
+      const dictIcons = Object.fromEntries(flatIcons.map(icon => ([icon["$name"], icon])));
+      setData(dictIcons);
       setError();
     } catch(e) {
+      console.error(e);
       setError(e.message);
     }
     setLoading(false);
@@ -177,7 +199,11 @@ function App() {
         </div>
         <div className={`icon-list ${size.toLowerCase()}`} ref={iconsRef}>
           {Object.values(data)
-              .filter(({"$name": n, "$description": d}) => !search ? true : n.toLowerCase().includes(search) || d.toLowerCase().includes(search))
+              .filter(({"$keywords": words}) => { 
+                if (!search) return true;
+                const lowerSearch = search.toLowerCase();
+                return words.some(word => word.includes(search));
+              })
               .map((data, i) => {
                 const {"$value": contents, "$name": name} = data;
           return <div key={'k'+i} tabIndex={0} onKeyDown={e => handleIconKeyPress(e, data)} onClick={() => setSelectedIcon(data)} className="fake-btn icon" dangerouslySetInnerHTML={{__html: contents}}></div>;

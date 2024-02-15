@@ -66,13 +66,13 @@
   max-width: calc(100vw - 20px);
 }
 
-.toolbar button:first-child {
+.toolbar button:first-of-type {
   margin-left: 0.5rem;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
 
-.toolbar button:last-child {
+.toolbar button:last-of-type {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
