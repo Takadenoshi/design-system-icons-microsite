@@ -29,6 +29,7 @@ function useIconData() {
               ...def.$name.toLowerCase().split("_"),
               ...def.$groups.flatMap(g => g.split("_")),
             ]).map(word => word.toLowerCase());
+            def['$key'] = [...groups, label].join('_');
             out.push(def)
           } else {
             out.push(...parseIcons(def, [...groups, label]));
@@ -37,7 +38,7 @@ function useIconData() {
         return out;
       }
       const flatIcons = parseIcons(inputData);
-      const dictIcons = Object.fromEntries(flatIcons.map(icon => ([icon["$name"], icon])));
+      const dictIcons = Object.fromEntries(flatIcons.map(icon => ([icon["$key"], icon])));
       setData(dictIcons);
       setError();
     } catch(e) {
@@ -65,12 +66,13 @@ function Copy({ copyIcon, successIcon, value }) {
 }
 
 function IconPanel({ data, close, icons, }) {
-  const copyIcon = icons && icons['content_copy'];
-  const successIcon = icons && icons['check'];
-  const closeIcon = icons && icons['close'];
-  const downloadIcon = icons && icons['download'];
+  const copyIcon = icons && icons['system_mono_content_copy'];
+  const successIcon = icons && icons['system_mono_check'];
+  debugger;
+  const closeIcon = icons && icons['system_mono_close'];
+  const downloadIcon = icons && icons['system_mono_download'];
 
-  const { "$value": contents, "$name": name, "$description": description } = data;
+  const { "$value": contents, "$name": name, "$key": key, "$description": description } = data;
   return <div className="icon-panel">
     <div className="close-btn md">
       <button className="fake-btn icon" style={{margin: 0, backgroundColor: 'transparent'}} onClick={close} dangerouslySetInnerHTML={{__html: closeIcon['$value']}}></button>
@@ -95,7 +97,7 @@ function IconPanel({ data, close, icons, }) {
         <div className="row">NAME <span className="value">{name}</span><Copy copyIcon={copyIcon} successIcon={successIcon} value={name} /></div>
         { description ? <div>Description: {description}</div> : null }
         <div className="row"><div>SOURCE</div><Copy copyIcon={copyIcon} successIcon={successIcon} value={contents} /></div>
-        <div className="row">DOWNLOAD <DownloadIcon icon={downloadIcon} name={name} source={contents} /></div>
+        <div className="row">DOWNLOAD <DownloadIcon icon={downloadIcon} name={key} source={contents} /></div>
       </div>
     </div>
   </div>
