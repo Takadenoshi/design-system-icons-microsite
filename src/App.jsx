@@ -65,6 +65,10 @@ function Copy({ copyIcon, successIcon, value }) {
   return <div className="copy-btn icon" style={{backgroundColor: 'transparent'}} onClick={onClick} dangerouslySetInnerHTML={{__html: label}}></div>;
 }
 
+function capitalizeFirst(str = '') {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
 function IconPanel({ data, close, icons, }) {
   const copyIcon = icons && icons['system_mono_content_copy'];
   const successIcon = icons && icons['system_mono_check'];
@@ -72,6 +76,11 @@ function IconPanel({ data, close, icons, }) {
   const downloadIcon = icons && icons['system_mono_download'];
 
   const { "$value": contents, "$name": name, "$key": key, "$description": description } = data;
+
+  const displayName = [...data['$groups'].slice(1), ...name.split("_")].map(
+    word => capitalizeFirst(word)
+  ).join('');
+
   return <div className="icon-panel">
     <div className="close-btn md">
       <button className="fake-btn icon" style={{margin: 0, backgroundColor: 'transparent'}} onClick={close} dangerouslySetInnerHTML={{__html: closeIcon['$value']}}></button>
@@ -93,7 +102,7 @@ function IconPanel({ data, close, icons, }) {
         </div>
       </div>
       <div className="right">
-        <div className="row">NAME <span className="value">{name}</span><Copy copyIcon={copyIcon} successIcon={successIcon} value={name} /></div>
+        <div className="row">NAME <span className="value">{displayName}</span><Copy copyIcon={copyIcon} successIcon={successIcon} value={displayName} /></div>
         { description ? <div>Description: {description}</div> : null }
         <div className="row"><div>SOURCE</div><Copy copyIcon={copyIcon} successIcon={successIcon} value={contents} /></div>
         <div className="row">DOWNLOAD <DownloadIcon icon={downloadIcon} name={key} source={contents} /></div>
